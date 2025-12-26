@@ -1,136 +1,99 @@
 # 📦 PowerSync Installation Guide
 
-A centralized power management system for computer laboratories.
-
 ---
 
-## 🖥️ Admin Setup (Server + Dashboard)
+## 🖥️ ADMIN SETUP (Server + Dashboard)
 
 ### Prerequisites
-Install the following software before proceeding:
+Install these before running setup:
 
-| Software | Download | Required For |
-|----------|----------|--------------|
-| **Python 3.10+** | [python.org/downloads](https://www.python.org/downloads/) | Server |
-| **Node.js 18+** | [nodejs.org](https://nodejs.org/) | Dashboard |
-| **Rust** | [rustup.rs](https://rustup.rs/) | Tauri Desktop App |
+| Software | Download Link |
+|----------|---------------|
+| Python 3.10+ | https://www.python.org/downloads/ |
+| Node.js 18+ | https://nodejs.org/ |
+| Rust | https://rustup.rs/ |
 
-> [!IMPORTANT]
-> During Python installation, check **"Add Python to PATH"**
+> **Important:** Check "Add Python to PATH" during Python installation
 
-### Installation Steps
+### Steps
+1. Extract the zip file to a folder
+2. Right-click **`Setup_Admin.bat`** → Run as Administrator
+3. Wait for installation to complete
+4. Press **Y** when asked to open Dashboard
 
-1. **Extract** `Major-Project.zip` to a folder (e.g., `C:\PowerSync`)
-
-2. **Run Setup** - Right-click `Setup_Admin.bat` → **Run as Administrator**
-
-3. **Wait** for all dependencies to install (5-10 minutes on first run)
-
-4. **Done!** When prompted, press **Y** to open the Dashboard
-
-### What Gets Installed
-- ✅ Python server dependencies
-- ✅ Node.js dashboard dependencies  
-- ✅ Server auto-starts on Windows login
-- ✅ Desktop shortcuts: `PowerSync Server` & `PowerSync Dashboard`
-
-### Starting Manually
-- **Server**: Double-click `PowerSync Server` shortcut on Desktop
-- **Dashboard**: Double-click `PowerSync Dashboard` shortcut on Desktop
+### What the Setup Does
+- ✅ Installs Python server dependencies
+- ✅ Installs Node.js dashboard dependencies (npm install)
+- ✅ Creates hidden launchers for server and dashboard
+- ✅ Adds server to Windows Startup (auto-start on login)
+- ✅ Creates desktop shortcuts:
+  - `PowerSync Server` - Starts server in background
+  - `PowerSync Dashboard` - Opens admin dashboard
+- ✅ Starts server immediately
 
 ---
 
-## 💻 Agent Setup (Client PCs)
+## 💻 AGENT SETUP (Client PCs)
 
 ### Prerequisites
-| Software | Download |
-|----------|----------|
-| **Python 3.10+** | [python.org/downloads](https://www.python.org/downloads/) |
+| Software | Download Link |
+|----------|---------------|
+| Python 3.10+ | https://www.python.org/downloads/ |
 
-### Installation Steps
+### Steps
+1. Extract the zip file to a folder
+2. Double-click **`Setup_Agent.bat`**
+3. Configure in the GUI:
+   - Enter Admin PC's IP address
+   - Set device name
+   - Adjust heartbeat interval if needed
+4. Click Save to start the agent
 
-1. **Extract** `Major-Project.zip` to a folder (e.g., `C:\PowerSync`)
-
-2. **Run Setup** - Double-click `Setup_Agent.bat`
-
-3. **Configure** in the GUI window that opens:
-   - **Server Address**: Enter the Admin PC's IP address (e.g., `192.168.1.100`)
-   - **Device Name**: Enter a name for this PC (e.g., `Lab-PC-01`)
-   - **Heartbeat Interval**: How often to report status (default: 30 seconds)
-
-4. **Save & Start** - Click the button to save settings and start the agent
-
-### What Gets Installed
-- ✅ Python agent dependencies
-- ✅ Agent auto-starts on Windows login (runs hidden)
-- ✅ Desktop shortcut: `PowerSync Settings`
-
-### Modifying Settings Later
-Double-click `PowerSync Settings` on Desktop to open the configuration GUI.
+### What the Setup Does
+- ✅ Installs Python agent dependencies + PyQt6
+- ✅ Creates hidden launcher for agent
+- ✅ Adds agent to Windows Startup (auto-start on login)
+- ✅ Creates desktop shortcut:
+  - `PowerSync Settings` - Opens configuration GUI
+- ✅ Opens configuration GUI for initial setup
+- ✅ Starts agent in background after configuration
 
 ---
 
-## 🌐 Network Configuration
+## 🌐 Network Setup
 
-### Firewall Rules (Admin PC)
-The admin server runs on **port 8000**. Add a firewall rule to allow incoming connections:
-
+### Admin PC - Allow Port 8000
+Run in PowerShell as Administrator:
 ```powershell
-# Run as Administrator
-netsh advfirewall firewall add rule name="PowerSync Server" dir=in action=allow protocol=tcp localport=8000
+netsh advfirewall firewall add rule name="PowerSync" dir=in action=allow protocol=tcp localport=8000
 ```
 
-### Finding Admin IP Address
-On the Admin PC, run this command to find the IP address:
+### Find Admin IP Address
+Run on Admin PC:
 ```powershell
 ipconfig | findstr IPv4
 ```
-Use this IP address when configuring agents.
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Server Won't Start
-- Check if Python is installed: `python --version`
-- Check if port 8000 is available: `netstat -an | findstr 8000`
-- View server logs in `server/` folder
-
-### Agent Can't Connect
-- Verify the server IP address is correct
-- Check if server is running: Open `http://[ADMIN-IP]:8000/health` in browser
-- Ensure firewall allows port 8000
-
-### Dashboard Won't Open
-- Check if Node.js is installed: `node --version`
-- Check if Rust is installed: `cargo --version`
-- Run `npm install` in the `dashboard/` folder manually
+| Problem | Solution |
+|---------|----------|
+| "Python not found" | Install Python, check "Add to PATH" |
+| "Node.js not found" | Install Node.js from nodejs.org |
+| "Rust not found" | Install Rust from rustup.rs |
+| Agent can't connect | Check server IP, verify port 8000 is open |
+| Dashboard won't open | Wait for Tauri to compile (first run takes time) |
 
 ---
 
-## 📊 Features
-
-- **Real-time Monitoring** - View all connected PCs status
-- **Auto Shutdown** - Automatically power off idle computers
-- **Wake-on-LAN** - Remotely wake up computers
-- **Energy Analytics** - Track power savings and CO₂ reduction
-- **Scheduling** - Set working hours and after-hours rules
-
----
-
-## 📁 Project Structure
+## 📁 Files Overview
 
 ```
-Major-Project/
-├── Setup_Admin.bat     ← Run this on Admin PC
-├── Setup_Agent.bat     ← Run this on Client PCs
-├── server/             ← FastAPI backend server
-├── dashboard/          ← Tauri/React admin dashboard
-└── agent/              ← Python monitoring agent
+├── Setup_Admin.bat    ← Run on Admin PC
+├── Setup_Agent.bat    ← Run on Client PCs
+├── server/            ← API server (Python)
+├── dashboard/         ← Admin UI (Tauri/React)
+└── agent/             ← Client monitor (Python)
 ```
-
----
-
-## 📞 Support
-
-For issues or questions, contact your system administrator.
