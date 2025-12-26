@@ -7,11 +7,11 @@
 ### Prerequisites
 Install these before running setup:
 
-| Software | Download Link |
-|----------|---------------|
-| Python 3.10+ | https://www.python.org/downloads/ |
-| Node.js 18+ | https://nodejs.org/ |
-| Rust | https://rustup.rs/ |
+| Software | Download Link | Notes |
+|----------|---------------|-------|
+| Python 3.10+ | https://www.python.org/downloads/ | Check "Add to PATH" |
+| Node.js 18+ | https://nodejs.org/ | Required |
+| Rust | Auto-installed | Setup installs if missing |
 
 > **Important:** Check "Add Python to PATH" during Python installation
 
@@ -24,6 +24,7 @@ Install these before running setup:
 ### What the Setup Does
 - ✅ Installs Python server dependencies
 - ✅ Installs Node.js dashboard dependencies (npm install)
+- ✅ Auto-installs Rust if not found (requires restart)
 - ✅ Creates hidden launchers for server and dashboard
 - ✅ Adds server to Windows Startup (auto-start on login)
 - ✅ Creates desktop shortcuts:
